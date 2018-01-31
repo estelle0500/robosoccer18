@@ -1,7 +1,4 @@
-Motor se(51,56,3,2,true); //3
-Motor ne(52,55,12,11,true); //2
-Motor sw(53,54,10,9,true); //4
-Motor nw(50,57,7,6,true); //1
+#include <movement.h>
 
 void init_drive() {
   // put your setup code here, to run once:
@@ -17,11 +14,6 @@ void init_drive() {
   north=readAngle();
   return;
 }
-
-#define ALIGN_GAIN_C 0.9
-#define ALIGN_GAIN_M 0.003
-#define DRIVE_OFFSET 20
-#define MAX_TURN 150
 
 void computeDrive(float drvDir, float maxSpd, float currAngle, float alignAngle, float maxTurn){
 /* Calculates speeds for all wheels
@@ -149,14 +141,4 @@ void brake(){
   return;
 }
 
-int sign(float a){
-  if(a>0) return 1;
-  else if(a<0) return -1;
-  return 0;
-}
 
-int sign(int a){
-  if(a>0) return 1;
-  else if(a<0) return -1;
-  return 0;
-}
