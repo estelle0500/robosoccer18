@@ -1,8 +1,28 @@
 #ifndef COMPASS_H
+#define COMPASS_H
+#include <Arduino.h>
 
-/* Read angle from compass using Serial */
-float readAngle();
+/* Start up compass */
+class Compass {
+    private:
+        HardwareSerial *serial;
+        int baud_rate;
+        float north;
 
+    public:
+        /* Declare compass' serial port */
+        Compass(HardwareSerial& serial, int baud_rate);
+
+        void init();
+
+        /* Read angle from compass using Serial */
+        float readAngle();
+
+        /* Get north */
+        inline float getNorth() {
+          return this->north;
+        };
+};
 /* Calculate how much the Robot should turn by.
 PID is applied to dampen oscillation of Robot.
 

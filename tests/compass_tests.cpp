@@ -1,5 +1,5 @@
 #include <compass_tests.h>
 
-void testCompass(){
-  Serial.println(readAngle());
+void testCompass(Compass& compass){
+  Serial.println(compass.readAngle());
 }

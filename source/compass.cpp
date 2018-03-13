@@ -1,12 +1,24 @@
-#include <compass.h>
+#include "compass.h"
 
-float readAngle(){ 
-  Serial2.flush();
-  float out=Serial2.parseFloat();
+
+Compass::Compass(HardwareSerial& serial, int baud_rate) {
+    this->serial = &serial;
+    this->baud_rate = baud_rate;
+}
+
+void Compass::init(){
+    (this->serial)->begin(this->baud_rate);
+    delay(300);
+    this->north = this->readAngle();
+}
+
+float Compass::readAngle(){
+  (this->serial)->flush();
+  float out=(this->serial)->parseFloat();
   return out;
 }
 
-int anglePid(float val,float set, float gain, int maximum, int offset=20, int sqFactor=70){
+int anglePid(float val,float set, float gain, int maximum, int offset, int sqFactor){
   float e=(val-set);
   if(e>=180){
     e=e-360;

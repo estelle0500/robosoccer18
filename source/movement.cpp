@@ -1,21 +1,12 @@
-#include <movement.h>
+#include "movement.h"
 
-void init_drive() {
-  // put your setup code here, to run once:
-/* TCCR1B=0;
-  TCCR1B|= (1 << CS11 || 1 << CS10);
-  TCCR2B=0;
-  TCCR2B|= (1 << CS11 || 1 << CS10);
-  TCCR3B=0;
-  TCCR3B|= (1 << CS11 || 1 << CS10);
-  TCCR4B=0;
-  TCCR4B|= (1 << CS11 || 1 << CS10);*/
-  delay(300);
-  north=readAngle();
-  return;
-}
+#ifndef COMPASS_H
+#include "compass.h"
+#endif
 
-void computeDrive(float drvDir, float maxSpd, float currAngle, float alignAngle, float maxTurn){
+#include <SpeedTrig.h>
+
+void computeDrive(float drvDir, float maxSpd, float currAngle, float alignAngle, float maxTurn, int speeds[4]){
 /* Calculates speeds for all wheels
 /0  1\
 
@@ -28,7 +19,7 @@ void computeDrive(float drvDir, float maxSpd, float currAngle, float alignAngle,
   while(drvDir<-180){
     drvDir+=360;
   }
-  
+
   float x=-SpeedTrig.cos((drvDir-45));
   float y=SpeedTrig.sin((drvDir-45));
   float norm;
@@ -125,7 +116,7 @@ void computeDrive(float drvDir, float maxSpd, float currAngle, float alignAngle,
   return;
 }
 
-void vroom(){
+void vroom(int speeds[]){
   nw.move(speeds[0]);
   ne.move(speeds[1]);
   se.move(speeds[2]);
@@ -140,5 +131,3 @@ void brake(){
   sw.move(0);
   return;
 }
-
-
