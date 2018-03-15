@@ -1,5 +1,5 @@
 #include "Arduino.h"
-#include "Wire.h"
+#include "i2c_t3.h"
 
 // initialize I2C
 int VL53L0X_i2c_init(void);

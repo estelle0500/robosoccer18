@@ -1,19 +1,62 @@
+/*!
+ * @file Adafruit_VL53L0X.cpp
+ *
+ * @mainpage Adafruit VL53L0X time-of-flight sensor
+ *
+ * @section intro_sec Introduction
+ *
+ * This is the documentation for Adafruit's VL53L0X driver for the
+ * Arduino platform.  It is designed specifically to work with the
+ * Adafruit VL53L0X breakout: https://www.adafruit.com/product/3317
+ *
+ * These sensors use I2C to communicate, 2 pins (SCL+SDA) are required
+ * to interface with the breakout.
+ *
+ * Adafruit invests time and resources providing this open source code,
+ * please support Adafruit and open-source hardware by purchasing
+ * products from Adafruit!
+ *
+ * @section dependencies Dependencies
+ *
+ *
+ * @section author Author
+ *
+ * Written by Limor Fried/Ladyada for Adafruit Industries.
+ *
+ * @section license License
+ *
+ * BSD license, all text here must be included in any redistribution.
+ *
+ */
+
 #include "Adafruit_VL53L0X.h"
-#include "Wire.h"
 
-#define VERSION_REQUIRED_MAJOR  1
-#define VERSION_REQUIRED_MINOR  0
-#define VERSION_REQUIRED_BUILD  1
+#define VERSION_REQUIRED_MAJOR  1 ///< Required sensor major version
+#define VERSION_REQUIRED_MINOR  0 ///< Required sensor minor version
+#define VERSION_REQUIRED_BUILD  1 ///< Required sensor build
 
-#define STR_HELPER( x ) #x
-#define STR( x )        STR_HELPER(x)
+#define STR_HELPER( x ) #x ///< a string helper
+#define STR( x )        STR_HELPER(x) ///< string helper wrapper
 
+/**************************************************************************/
+/*!
+    @brief  Setups the I2C interface and hardware
+    @param  i2c_addr Optional I2C address the sensor can be found on. Default is 0x29
+    @param debug Optional debug flag. If true, debug information will print out via Serial.print during setup. Defaults to false.
+    @returns True if device is set up, false on any failure
+*/
+/**************************************************************************/
 
 void Adafruit_VL53L0X::useMultiplexer() {
-    Wire.beginTransmission(multiplexerAddr);
-    Wire.write(1<<(portNumber));
-    Wire.endTransmission();
+    if (portNumber == -1) return;
+    /*Serial.println(multiplexerAddr);
+    Serial.println(portNumber);
+    delay(1000);*/
+    Wire1.beginTransmission(multiplexerAddr);
+    Wire1.write(1<<(portNumber));
+    Wire1.endTransmission();
 }
+
 boolean Adafruit_VL53L0X::begin(uint8_t multiplexer_addr, uint8_t port_number, uint8_t i2c_addr, boolean debug ) {
     multiplexerAddr = multiplexer_addr;
     portNumber = port_number;
@@ -24,14 +67,14 @@ boolean Adafruit_VL53L0X::begin(uint8_t multiplexer_addr, uint8_t port_number, u
   uint32_t  refSpadCount;
   uint8_t   isApertureSpads;
   uint8_t   VhvSettings;
-   uint8_t   PhaseCal;
+  uint8_t   PhaseCal;
 
   // Initialize Comms
   pMyDevice->I2cDevAddr      =  VL53L0X_I2C_ADDR;  // default
   pMyDevice->comms_type      =  1;
   pMyDevice->comms_speed_khz =  400;
 
-  Wire.begin();     // VL53L0X_i2c_init();
+  //Wire1.begin();     // VL53L0X_i2c_init();
 
   // unclear if this is even needed:
   if( VL53L0X_IMPLEMENTATION_VER_MAJOR != VERSION_REQUIRED_MAJOR ||
@@ -115,7 +158,7 @@ boolean Adafruit_VL53L0X::begin(uint8_t multiplexer_addr, uint8_t port_number, u
           Serial.println( F( "VL53L0X: SetDeviceMode" ) );
       }
 
-      Status = VL53L0X_SetDeviceMode( pMyDevice, VL53L0X_DEVICEMODE_CONTINUOUS_RANGING );        // Setup in single ranging mode
+      Status = VL53L0X_SetDeviceMode( pMyDevice, VL53L0X_DEVICEMODE_SINGLE_RANGING );        // Setup in single ranging mode
   }
 
   // Enable/Disable Sigma and Signal check
@@ -147,10 +190,17 @@ boolean Adafruit_VL53L0X::begin(uint8_t multiplexer_addr, uint8_t port_number, u
   }
 }
 
+/**************************************************************************/
+/*!
+    @brief  Change the I2C address of the sensor
+    @param  newAddr the new address to set the sensor to
+    @returns True if address was set successfully, False otherwise
+*/
+/**************************************************************************/
 boolean Adafruit_VL53L0X::setAddress(uint8_t newAddr) {
   newAddr &= 0x7F;
 
-  VL53L0X_SetDeviceAddress(pMyDevice, newAddr * 2); // 7->8 bit
+  Status = VL53L0X_SetDeviceAddress(pMyDevice, newAddr * 2); // 7->8 bit
 
   delay(10);
 
@@ -161,7 +211,15 @@ boolean Adafruit_VL53L0X::setAddress(uint8_t newAddr) {
   return false;
 }
 
-VL53L0X_Error Adafruit_VL53L0X::getContinuousRangingMeasurement( VL53L0X_RangingMeasurementData_t *RangingMeasurementData, boolean debug )
+/**************************************************************************/
+/*!
+    @brief  get a ranging measurement from the device
+    @param  RangingMeasurementData the pointer to the struct the data will be stored in
+    @param debug Optional debug flag. If true debug information will print via Serial.print during execution. Defaults to false.
+    @returns True if address was set successfully, False otherwise
+*/
+/**************************************************************************/
+VL53L0X_Error Adafruit_VL53L0X::getSingleRangingMeasurement( VL53L0X_RangingMeasurementData_t *RangingMeasurementData, boolean debug )
 {
     useMultiplexer();
     VL53L0X_Error   Status = VL53L0X_ERROR_NONE;
@@ -174,14 +232,9 @@ VL53L0X_Error Adafruit_VL53L0X::getContinuousRangingMeasurement( VL53L0X_Ranging
 
     if( Status == VL53L0X_ERROR_NONE ) {
         if( debug ) {
-            Serial.println( F( "VL53L0X: get measurement data" ) );
+            Serial.println( F( "sVL53L0X: PerformSingleRangingMeasurement" ) );
         }
-        uint8_t measurementDataReady = 0;
-        while (measurementDataReady != 1) {
-                Status = VL53L0X_GetMeasurementDataReady( pMyDevice, &measurementDataReady);
-                Serial.println(measurementDataReady);
-        }
-        Status = VL53L0X_GetRangingMeasurementData( pMyDevice, RangingMeasurementData );
+        Status = VL53L0X_PerformSingleRangingMeasurement( pMyDevice, RangingMeasurementData );
 
         if( debug ) {
             printRangeStatus( RangingMeasurementData );
@@ -203,10 +256,14 @@ VL53L0X_Error Adafruit_VL53L0X::getContinuousRangingMeasurement( VL53L0X_Ranging
 
 
 
-
+/**************************************************************************/
+/*!
+    @brief  print a ranging measurement out via Serial.print in a human-readable format
+    @param pRangingMeasurementData a pointer to the ranging measurement data
+*/
+/**************************************************************************/
 void Adafruit_VL53L0X::printRangeStatus( VL53L0X_RangingMeasurementData_t* pRangingMeasurementData )
 {
-    useMultiplexer();
     char buf[ VL53L0X_MAX_STRING_LENGTH ];
     uint8_t RangeStatus;
 
@@ -223,17 +280,4 @@ void Adafruit_VL53L0X::printRangeStatus( VL53L0X_RangingMeasurementData_t* pRang
     Serial.print( F( " : " ) );
     Serial.println( buf );
 
-}
-
-VL53L0X_Error Adafruit_VL53L0X::CheckMeasurementDataReady(uint8_t *isReady) {
-    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
-    Status = VL53L0X_GetMeasurementDataReady(pMyDevice, isReady);
-    return Status;
-}
-
-VL53L0X_Error Adafruit_VL53L0X::GetRangeMeasurement(VL53L0X_RangingMeasurementData_t* pRangingMeasurementData) {
-    Status = VL53L0X_GetRangingMeasurementData(pMyDevice, pRangingMeasurementData);
-
-    VL53L0X_ClearInterruptMask(pMyDevice, VL53L0X_REG_SYSTEM_INTERRUPT_GPIO_NEW_SAMPLE_READY);
-    VL53L0X_PollingDelay(pMyDevice);
 }
