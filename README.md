@@ -20,5 +20,9 @@ Code repository for Robosoccer 2018
 2. Will write this eventually
 
 ## TODO
-Might want to minimise direct edits to the library and instead write wrappers as part of source_libs.
 
+1. Rewrite IR sensor code as a wrapper in *source_libs* instead of directly editing the VL53L0X library
+2. Rewrite movement code into a class
+3. Incorporate the code in *tests* to the corresponding classes 
+4. Move all the current code into a folder for Teensy code (so that it won't be confusing once we add in Raspberry Pi code)
+5. (Maybe?) Make all the code directly refer to *external_libs* so that those libraries don't need to be installed one by one...
