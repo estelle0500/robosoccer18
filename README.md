@@ -18,3 +18,7 @@ Code repository for Robosoccer 2018
 **Raspberry Pi**
 1. Download OpenCV 3.3.0 for Python. 
 2. Will write this eventually
+
+## TODO
+Might want to minimise direct edits to the library and instead write wrappers as part of source_libs.
+
