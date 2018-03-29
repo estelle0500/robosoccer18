@@ -11,6 +11,3 @@ void LCD::clearDisplay() {
   this->setCursor(0,0);
 }
 
-void LCD::println(char buf[]) {
-
-}
