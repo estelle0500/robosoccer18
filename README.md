@@ -11,9 +11,8 @@ Code repository for Robosoccer 2018
 
 **Teensy 3.5**
 1. Download the [Arduino IDE](https://www.arduino.cc/en/Main/Software) and [software for Teensy](https://www.pjrc.com/teensy/td_download.html).
-2. Download and install each folder in **external_libs** as a separate library in Arduino IDE.
-3. Download and install **source_libs** as one library and name it **robosoccer** in Arduino IDE.
-4. Edit or create new files for Arduino code (.ino) in the **main** folder.
+2. Download and install **robosoccer** as a library in Arduino IDE (you must have Arduino IDE version 1.6.0 or newer).
+3. Edit or create new files for Arduino code (.ino) in the **main** folder.
 
 **Raspberry Pi**
 1. Download OpenCV 3.3.0 for Python. 
