@@ -1,0 +1,5 @@
+﻿D:\program\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (AttemptToUseOpenCV.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Launch.cpp
+e:\books and lit\rc lit\localization correction\attempttouseopencv\attempttouseopencv\launch.cpp(42): warning C4101: 'c': unreferenced local variable
+  AttemptToUseOpenCV.vcxproj -> E:\Books and Lit\RC lit\Localization correction\AttemptToUseOpenCV\x64\Debug\FilmHeightExtraction.exe
+  AttemptToUseOpenCV.vcxproj -> E:\Books and Lit\RC lit\Localization correction\AttemptToUseOpenCV\x64\Debug\FilmHeightExtraction.pdb (Partial PDB)
