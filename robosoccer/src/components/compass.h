@@ -7,22 +7,28 @@ class Compass {
     private:
         HardwareSerial *serial;
         int baud_rate;
+        volatile int angle;
         float north;
 
     public:
         /* Declare compass' serial port */
         Compass(HardwareSerial& serial, int baud_rate);
 
+        /* Start up the compass */
         void init();
 
         /* Read angle from compass using Serial */
         float readAngle();
 
-        /* Get north */
         inline float getNorth() {
           return this->north;
         };
+
+        inline float getAngle() {
+            return this->angle;
+        };
 };
+
 /* Calculate how much the Robot should turn by.
 PID is applied to dampen oscillation of Robot.
 
