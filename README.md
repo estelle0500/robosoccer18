@@ -5,7 +5,17 @@ Code repository for Robosoccer 2018
 ## Hardware Setup
 
 **Teensy 3.5**: Wire it as specified in the [circuit drawing](https://drive.google.com/drive/folders/1_fFdSYqlDCo2Nxi7MjGL3PBpwIonidsW?usp=sharing). Otherwise, you may need to change the pin mappings in the code.
-**Raspberry Pi**: Nothing yet.
+
+| Component | Connection Type |
+|:--------- |:---------------:|
+| Compass   | Serial4         |
+| Multiplexer | Address 0x70 on Wire1 |
+| Front IR Sensor | Address 0x29, Port 4 on multiplexer |
+| Left IR Sensor | Address 0x29, Port 7 on multiplexer |
+| Back IR Sensor | Address 0x29, Port 0 on multiplexer |
+| Right IR Sensor | Address 0x29, Port 2 on multiplexer |
+
+**Raspberry Pi**: Connected to Teensy via USB cable.
 
 ## Software Setup
 
@@ -20,8 +30,7 @@ Code repository for Robosoccer 2018
 
 ## TODO
 
-1. Rewrite IR sensor code as a wrapper in *source_libs* instead of directly editing the VL53L0X library
-2. Rewrite movement code into a class
-3. Incorporate the code in *tests* to the corresponding classes 
-4. Move all the current code into a folder for Teensy code (so that it won't be confusing once we add in Raspberry Pi code)
-5. (Maybe?) Make all the code directly refer to *external_libs* so that those libraries don't need to be installed one by one...
+1. Write and test localization code.
+2. Write and test out-of-bounds code.
+3. Test ball tracking code.
+4. Integrate the strategies.
