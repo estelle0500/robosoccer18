@@ -6,11 +6,13 @@
 #include "../components/ir_sensor.h"
 #include "../logic/movement.h"
 
+// #define VERBOSE
+
 // interval in microseconds
-#define INTERVAL 10000
+#define INTERVAL 20000
 
 extern Compass compass;
-// extern IntervalTimer updateTimer;
+extern IRSensor *ir_sensors[4];
 
 void updateDriving();
 void updateAll();
