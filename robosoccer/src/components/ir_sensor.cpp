@@ -11,7 +11,10 @@ void IRSensor::useMultiplexer() {
     Wire1.endTransmission();
 }
 
-
+void IRSensor::init(uint32_t period_ms) {
+    this->VL53L0X::init();
+    this->VL53L0X::startContinuous(period_ms);
+}
 
 bool IRSensor::readDistance() {
     if ((readReg(RESULT_INTERRUPT_STATUS) & 0x07) == 0) return false;

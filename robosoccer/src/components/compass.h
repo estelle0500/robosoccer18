@@ -8,7 +8,7 @@ class Compass {
         HardwareSerial *serial;
         int baud_rate;
         volatile int angle;
-        float north;
+        int north;
 
     public:
         /* Declare compass' serial port */
@@ -18,13 +18,13 @@ class Compass {
         void init();
 
         /* Read angle from compass using Serial */
-        float readAngle();
+        bool readAngle();
 
-        inline float getNorth() {
+        inline int getNorth() {
           return this->north;
         };
 
-        inline float getAngle() {
+        inline int getAngle() {
             return this->angle;
         };
 };

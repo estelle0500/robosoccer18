@@ -12,7 +12,7 @@ void Compass::init(){
     this->north = this->readAngle();
 }
 
-float Compass::readAngle(){
+bool Compass::readAngle(){
   if ((this->serial)->available()>2) {
       bool sign;
       while ((this->serial)->available()) {
@@ -32,9 +32,11 @@ float Compass::readAngle(){
               if (sign) this->angle = data;
               else this->angle = -data;
           }
+
+          return true;
       }
   }
-  return this->angle;
+  return false;
 }
 
 int anglePid(float val,float set, float gain, int maximum, int offset, int sqFactor){
