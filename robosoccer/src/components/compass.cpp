@@ -13,9 +13,28 @@ void Compass::init(){
 }
 
 float Compass::readAngle(){
-  (this->serial)->flush();
-  float out=(this->serial)->parseFloat();
-  return out;
+  if ((this->serial)->available()>2) {
+      bool sign;
+      while ((this->serial)->available()) {
+          byte start = (this->serial)->read();
+          if (start>=254) {
+              sign = 255 ^ start;
+              // start byte is 255 means negative number
+              // 254 means positive number
+              // start byte should not be anything else
+              break;
+          }
+      }
+      if ((this->serial)->available()) {
+          byte data = (this->serial)->read();
+          if (data <= 180) {
+              // larger than 180 must be a bad reading
+              if (sign) this->angle = data;
+              else this->angle = -data;
+          }
+      }
+  }
+  return this->angle;
 }
 
 int anglePid(float val,float set, float gain, int maximum, int offset, int sqFactor){
