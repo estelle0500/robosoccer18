@@ -11,7 +11,7 @@ void setup() {
   Serial.begin(115200);
 }
 
-int arr[4];
+int arr[5];
 void waitKey() {
   // type q to stop the robot from running
   // type r to restart the robot
@@ -52,36 +52,32 @@ void loop() {
   while (Serial.available()){
     byte input = Serial.read();
     if (input == 254){
-      arr[0] = 254
+      arr[0] = 254;
       arr[1] = Serial.read();
       arr[2] = Serial.read();
       arr[3] = Serial.read();
       arr[4] = Serial.read();
       if (arr[4] == 255){
-        data = True;
-        break
+        data = true;
+        break;
       }
       else{
-        data = False;
-        break
+        data = false;
+        break;
       }
-
     }
-
-
-    }
-  if (data == True){
+  }
+  if (data == true){
     CURR_SPD = 50;
     if (arr[2] == 0){
-      arr[3] = arr[3] * -1
+      arr[3] = -arr[3];
     }
     if (arr[2] == 1){
-      arr[3] = arr[3]
+      arr[3] = arr[3];
     }
-    DRIVE_DIR = arr[3]
+    DRIVE_DIR = arr[3];
   }
   else{
     CURR_SPD = 0;
-  }
   }
 }
