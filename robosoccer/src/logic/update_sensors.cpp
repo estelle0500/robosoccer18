@@ -18,7 +18,7 @@ void updateAll() {
     cli();
     compass.readAngle();
     for (int i=0; i<4; i++) {
-        ir_sensors[i]->readDistance();
+        ultra_sensors[i]->readDistance();
 	    //Serial.print(ir_sensors[i]->getDistance());
 	    //Serial.print("\t");
     }

@@ -13,6 +13,7 @@
 
 extern Compass compass;
 extern IRSensor *ir_sensors[4];
+extern UltrasoundSensor *ultra_sensors[4];
 
 void updateDriving();
 void updateAll();
