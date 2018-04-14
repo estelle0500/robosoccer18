@@ -27,10 +27,10 @@ extern LightSensor *light_sensors[4] = {&light_front, &light_left, &light_right,
 
 IntervalTimer updateTimer;
 
-UltrasoundSensor ultra_front(0, ads), ultra_left(0, ads), ultra_right(0, ads), ultra_back(0, ads);
+UltrasoundSensor ultra_front(2, ads), ultra_left(3, ads), ultra_right(0, ads), ultra_back(0, ads);
 extern UltrasoundSensor *ultra_sensors[4] = {&ultra_front, &ultra_left, &ultra_right, &ultra_back};
 
-void setup_components() {
+void setupComponents() {
     Wire1.begin();
     Wire1.beginTransmission(MULTIPLEXER_ADDRESS);
     Wire1.write(1<<1);

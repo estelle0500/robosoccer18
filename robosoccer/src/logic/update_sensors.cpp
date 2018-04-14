@@ -13,16 +13,18 @@ void updateDriving() {
     else brake();
 }
 
+bool alt = true;
 void updateAll() {
     // Update sensors first
     cli();
     compass.readAngle();
-    for (int i=0; i<4; i++) {
-        ultra_sensors[i]->readDistance();
-	    //Serial.print(ir_sensors[i]->getDistance());
-	    //Serial.print("\t");
+    if (alt) {
+        for (int i=0; i<4; i++) {
+            ultra_sensors[i]->readDistance();
+            // ir_sensors[i]->readDistance();
+        }
     }
-    //Serial.println();
+    alt = !alt; // this allows ultrasound sensor reading to occur only on alternate updates
     updateDriving();
     sei();
 }
