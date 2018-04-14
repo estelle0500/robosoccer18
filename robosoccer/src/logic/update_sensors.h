@@ -4,6 +4,7 @@
 #include "Arduino.h"
 #include "../components/compass.h"
 #include "../components/ir_sensor.h"
+#include "../components/ultrasound_sensor.h"
 #include "../logic/movement.h"
 
 // #define VERBOSE

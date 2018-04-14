@@ -17,7 +17,7 @@ extern Compass compass(Serial4, 115200);
 extern volatile int DRIVE_DIR = 0;
 extern volatile int CURR_SPD = 0;
 
-extern Adafruit_ADS1115 ads(0x48);
+Adafruit_ADS1115 ads(0x48);
 
 // IRSensor ir_front(4,0x70), ir_back(0,0x70), ir_left(7,0x70), ir_right(2,0x70);
 // extern IRSensor *ir_sensors[4] = {&ir_left, &ir_front, &ir_right, &ir_back};
@@ -27,7 +27,7 @@ extern LightSensor *light_sensors[4] = {&light_front, &light_left, &light_right,
 
 IntervalTimer updateTimer;
 
-UltrasoundSensor ultra_front(0), ultra_left(0), ultra_right(0), ultra_back(0);
+UltrasoundSensor ultra_front(0, ads), ultra_left(0, ads), ultra_right(0, ads), ultra_back(0, ads);
 extern UltrasoundSensor *ultra_sensors[4] = {&ultra_front, &ultra_left, &ultra_right, &ultra_back};
 
 void setup_components() {
@@ -41,4 +41,22 @@ void setup_components() {
     compass.init();
     ads.setGain(GAIN_ONE);
     updateTimer.begin(updateAll, INTERVAL);
+}
+
+
+void waitKey() {
+  // type q to stop the robot from running
+  // type r to restart the robot
+  while (Serial.available()) {
+    byte b = Serial.read();
+    if (b == 'q') {
+      bool restarted = false;
+      while (!restarted) {
+        if (Serial.available()) {
+          byte b = Serial.read();
+          if (b == 'r') restarted=true;
+        }
+      }
+    }
+  }
 }

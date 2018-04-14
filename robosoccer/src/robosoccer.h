@@ -35,5 +35,6 @@
 extern LightSensor *light_sensors[4];
 
 void setup_components();
+void waitKey();
 
 #endif
