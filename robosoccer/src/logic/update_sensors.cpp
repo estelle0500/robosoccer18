@@ -26,11 +26,11 @@ void filterDriveDir() {
         }
         else if (disallow_quad[(move_quad+3)%4]) {
             // e.g. robot wants to move nw but nw, sw quads blocked --> move forward
-            DRIVE_DIR = deg_dirs_ccw[move_quad];
+            DRIVE_DIR = deg_dirs_cw[move_quad];
         }
         else if (disallow_quad[(move_quad+1)%4]) {
             // e.g. robot wants to move nw but nw, ne quads blocked --> move left
-            DRIVE_DIR = deg_dirs_ccw[(move_quad+3)%4];
+            DRIVE_DIR = deg_dirs_cw[(move_quad+3)%4];
         }
     }
 }
@@ -89,9 +89,9 @@ void updateAll() {
     alt = !alt; // this allows ultrasound sensor reading to occur only on alternate updates
     // Update which quadrants are available
     disallow_quad[0] = blocked_dir[0] | blocked_dir[1];
-    disallow_quad[1] = blocked_dir[0] | blocked_dir[2];
-    disallow_quad[2] = blocked_dir[3] | blocked_dir[1];
-    disallow_quad[3] = blocked_dir[3] | blocked_dir[2];
+    disallow_quad[1] = blocked_dir[0] | blocked_dir[3];
+    disallow_quad[2] = blocked_dir[2] | blocked_dir[1];
+    disallow_quad[3] = blocked_dir[2] | blocked_dir[3];
     updateDriving();
     sei();
 }

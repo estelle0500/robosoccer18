@@ -32,6 +32,11 @@
 #define DCHANNEL5 10, 47, 9, 8
 #define DCHANNEL6 4, 47, 3, 2
 
+#define FRONT 0
+#define LEFT 1
+#define BACK 2
+#define RIGHT 3
+
 #define MULTIPLEXER_ADDRESS 0x70
 
 #define ANGLE_TOLERANCE 10

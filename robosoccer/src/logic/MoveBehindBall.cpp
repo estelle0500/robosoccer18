@@ -63,23 +63,17 @@ int decideMotionAngle1(int ballAngle, int ballDistance)
 	return (int)motionDirection;
 }
 
-int decideMotionAngle2(int ballAngle, int ballDistance)
+int decideMotionAngle2(int ballAngle, int ballDistance, int sign)
 {
 	float wSink = 50.0f / (float)ballDistance; // weight factor
-	bool isMirrored = false;
 	float motionDirection = 0.0;
-	if (ballAngle < 0)
-	{
-		isMirrored = true;
-		ballAngle = -ballAngle;
-	}
 
 	// meaning that the robot is in front of the ball
 	if (ballAngle > 90)
 	{
 		// need to convert to the standard cartesian angle
 		Vector vCircle = Vector(ballAngle + 180, 1.0f);
-		Vector vSink = Vector(90 + ballAngle, 1.0f);
+		Vector vSink = Vector(ballAngle - 90, 1.0f);
 
 		vCircle.add(vSink.mWeight(wSink));
 		motionDirection = SpeedTrig.atan2(-vCircle.y, -vCircle.x);
@@ -89,7 +83,7 @@ int decideMotionAngle2(int ballAngle, int ballDistance)
 	{
 		motionDirection = decideMotionAngle1(ballAngle, ballDistance);
 	}
-	if (isMirrored)
+	if (sign<0)
 		motionDirection = -motionDirection;
 
 	return (int)motionDirection;
@@ -109,7 +103,9 @@ void mockTesting()
 		if (communication.dataSet[ind].cnt != 0)
 		{
 			int angle1 = communication.dataSet[ind].detectedObjectList->angle;
-			int angle2 = decideMotionAngle2(angle1,1);
+			int sign = angle1<0 ? -1 : 1;
+			if (angle1<0) angle1 = -angle1;
+			int angle2 = decideMotionAngle2(angle1,1,sign);
 			Serial.print(angle1);
 			Serial.print("  ");
 			Serial.println(angle2);

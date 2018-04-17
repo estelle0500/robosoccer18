@@ -20,9 +20,9 @@ extern IRSensor *ir_sensors[4];
 extern UltrasoundSensor *ultra_sensors[4];
 extern LightSensor *light_sensors[4];
 
-// extern bool blocked_dir[4];
+extern volatile bool blocked_dir[4];
 const int deg_dirs[4] = {180, 90, 0, -90};
-const int deg_dirs_ccw[4] = {180, -90, 0, 90};
+const int deg_dirs_cw[4] = {0, 90, 180, -90};
 
 void updateDriving();
 void updateAll();
