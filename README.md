@@ -5,15 +5,24 @@ Code repository for Robosoccer 2018
 ## Hardware Setup
 
 **Teensy 3.5**: Wire it as specified in the [circuit drawing](https://drive.google.com/drive/folders/1_fFdSYqlDCo2Nxi7MjGL3PBpwIonidsW?usp=sharing). Otherwise, you may need to change the pin mappings in the code.
-**Raspberry Pi**: Nothing yet.
+
+| Component | Connection Type |
+|:--------- |:---------------:|
+| Compass   | Serial4         |
+| Multiplexer | Address 0x70 on Wire1 |
+| Front IR Sensor | Address 0x29, Port 4 on multiplexer |
+| Left IR Sensor | Address 0x29, Port 7 on multiplexer |
+| Back IR Sensor | Address 0x29, Port 0 on multiplexer |
+| Right IR Sensor | Address 0x29, Port 2 on multiplexer |
+
+**Raspberry Pi**: Connected to Teensy via USB cable.
 
 ## Software Setup
 
 **Teensy 3.5**
 1. Download the [Arduino IDE](https://www.arduino.cc/en/Main/Software) and [software for Teensy](https://www.pjrc.com/teensy/td_download.html).
-2. Download and install each folder in **external_libs** as a separate library in Arduino IDE.
-3. Download and install **source_libs** as one library and name it **robosoccer** in Arduino IDE.
-4. Edit or create new files for Arduino code (.ino) in the **main** folder.
+2. Download and install **robosoccer** as a library in Arduino IDE (you must have Arduino IDE version 1.6.0 or newer).
+3. Edit or create new files for Arduino code (.ino) in the **main** folder.
 
 **Raspberry Pi**
 1. Download OpenCV 3.3.0 for Python. 
@@ -21,8 +30,7 @@ Code repository for Robosoccer 2018
 
 ## TODO
 
-1. Rewrite IR sensor code as a wrapper in *source_libs* instead of directly editing the VL53L0X library
-2. Rewrite movement code into a class
-3. Incorporate the code in *tests* to the corresponding classes 
-4. Move all the current code into a folder for Teensy code (so that it won't be confusing once we add in Raspberry Pi code)
-5. (Maybe?) Make all the code directly refer to *external_libs* so that those libraries don't need to be installed one by one...
+1. Write and test localization code.
+2. Write and test out-of-bounds code.
+3. Test ball tracking code.
+4. Integrate the strategies.
