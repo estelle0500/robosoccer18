@@ -5,7 +5,7 @@
 int decideMotionAngle(int ballAngle)
 {
 	// constant for tuning here!
-	float k = 0.8;
+	float k = 0.2;
 
 	bool isMirrored = false;
 	// mirror right to left
@@ -117,5 +117,3 @@ void mockTesting()
 		delay(50);
 	}
 }
-
-

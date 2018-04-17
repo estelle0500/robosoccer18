@@ -9,6 +9,8 @@
 #define ALIGN_GAIN_M 0.003
 #define DRIVE_OFFSET 20
 #define MAX_TURN 150
+#define MAX_SPD 60
+extern volatile int DRIVE_DIR, CURR_SPD;
 
 extern Motor se, ne, sw, nw;
 

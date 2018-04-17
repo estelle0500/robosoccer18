@@ -11,15 +11,10 @@
 class LightSensor {
 private:
     uint8_t pin_number, direction;
-    static void avoidLine(uint8_t direction);
-    static void avoidLineFront();
-    static void avoidLineRight();
-    static void avoidLineBack();
-    static void avoidLineLeft();
 public:
     LightSensor(uint8_t pin_number, uint8_t direction);
-    void init(bool interrupt_enabled = true);
-    bool triggered() {
+    void init();
+    inline bool triggered() {
         return digitalRead(this->pin_number)==HIGH;
     }
 };

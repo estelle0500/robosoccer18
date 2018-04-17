@@ -1,7 +1,7 @@
 #ifndef MOVEBEHINDBALL_H
 #define MOVEBEHINDBALL_H
-#include "Arduino.h"
-#include "SpeedTrig.h"
+
+#include "../external_libs/SpeedTrig/SpeedTrig.h"
 #include <cmath>
 #include "RpiCommunication.h"
 
