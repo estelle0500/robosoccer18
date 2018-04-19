@@ -11,7 +11,7 @@ int decideMotionAngle(int ballAngle);
 // more complicated on based the superposition of angle offset + sink + imaginary ball behind
 int decideMotionAngle1(int ballAngle, int ballDistance);
 
-int decideMotionAngle2(int ballAngle, int ballDistance, int sign);
+int decideMotionAngle2(int ballAngle, int ballDistance);
 
 void mockTesting();
 

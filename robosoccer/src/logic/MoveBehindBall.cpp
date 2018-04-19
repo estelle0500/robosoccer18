@@ -27,10 +27,10 @@ int decideMotionAngle(int ballAngle)
 int decideMotionAngle1(int ballAngle, int ballDistance)
 {
 	// constant for tuning
-	float k = 0.8; // very hard to explain
+	float k = 0.2; // very hard to explain
 	float distToIm = 15.0f; // the distance behind the real ball where the imaginary ball is placed
-	float wSink = 50.0f / (float)ballDistance; // weight factor
-	float wIm = 1.0f;
+	float wSink = (float)ballDistance/50.0; // weight factor
+	float wIm = 0.0f;
 
 	bool isMirrored = false;
 	if (ballAngle < 0)
@@ -63,28 +63,33 @@ int decideMotionAngle1(int ballAngle, int ballDistance)
 	return (int)motionDirection;
 }
 
-int decideMotionAngle2(int ballAngle, int ballDistance, int sign)
+int decideMotionAngle2(int ballAngle, int ballDistance)
 {
-	float wSink = 50.0f / (float)ballDistance; // weight factor
+	float wSink = (float)(ballDistance-50.0f) / 100.0f; // weight factor
 	float motionDirection = 0.0;
-
+	
+	bool isMirrored = false;
+	if (ballAngle < 0) {
+		isMirrored = true;
+		ballAngle = -ballAngle;
+	}
 	// meaning that the robot is in front of the ball
-	if (ballAngle > 90)
+	if (ballAngle > 30)
 	{
 		// need to convert to the standard cartesian angle
 		Vector vCircle = Vector(ballAngle + 180, 1.0f);
-		Vector vSink = Vector(ballAngle - 90, 1.0f);
+		Vector vSink = Vector(ballAngle + 90, 1.0f);
 
 		vCircle.add(vSink.mWeight(wSink));
 		motionDirection = SpeedTrig.atan2(-vCircle.y, -vCircle.x);
+		// motionDirection = SpeedTrig.atan2(-vSink.y, -vSink.x);
 		motionDirection = motionDirection * 180 / 3.1415926 + 90;
 	}
 	else
 	{
 		motionDirection = decideMotionAngle1(ballAngle, ballDistance);
 	}
-	if (sign<0)
-		motionDirection = -motionDirection;
+	if (isMirrored) motionDirection = -motionDirection;
 
 	return (int)motionDirection;
 }
@@ -105,7 +110,7 @@ void mockTesting()
 			int angle1 = communication.dataSet[ind].detectedObjectList->angle;
 			int sign = angle1<0 ? -1 : 1;
 			if (angle1<0) angle1 = -angle1;
-			int angle2 = decideMotionAngle2(angle1,1,sign);
+			int angle2 = decideMotionAngle2(angle1,1);
 			Serial.print(angle1);
 			Serial.print("  ");
 			Serial.println(angle2);
