@@ -10,43 +10,61 @@ from picamera import PiCamera
 #from imageProc import *
 #from FilterContour import *
 from convexHull import *
-
-# setting up the camera
-camera = PiCamera()
-camera.resolution = (640, 480)
-camera.framerate = 32
-rawCapture = PiRGBArray(camera, size=(640, 480))
-time.sleep(0.1)
-camera.awb_mode = 'off'
-i = 5*1.4
-j = 9*1.4
-camera.awb_gains = (1.0+0.05*i,1.0+.05*j)
+from PiVideoStream import *
 
 #setting up other classes
 
 counter = 0
+cycle_count = 0
+t0 = time.time()
+ted = 0
+
+vs = PiVideoStream().start()
+time.sleep(2.0)
 
 # capture frames from the camera
-for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+while(1):
    # flush away the empty frames
+    if (vs.haveNewFrame):
+        cycle_count = cycle_count + 1
+    image = vs.read()[0:480,60:540]
     if (counter < 10):
         counter = counter + 1
-        rawCapture.truncate(0)
+        print("flushing")
         continue
+    tanother = time.time()
+    #print("other process")
+    #print(tanother - ted)
+       
+    tst = time.time()
     # show the frame
-    image = frame.array[0:480, 80:560]
+    '''
     cv2.imshow('Frame', image)
     k = cv2.waitKey(30) & 0xff
     if k == 27:
         break
 
-    time.sleep(0.1)
-    thresholdingForOrange(image)
-    
-    #mask, cnts =thresholdingForOrange(image)
-    #if len(cnts) > 0:
-    #     print(selectBall(image,cnts))
-    #else:
-    #    print("no contour found")
 
-    rawCapture.truncate(0)
+    '''
+    # time.sleep(0.1)
+    mask, cnts = thresholdingForOrange(image)
+    if mask == None:
+        pass
+    #sendLocation(cnts)
+
+    else:
+        if (time.time()-t0>1.0):
+            print (cycle_count)
+            t0 = time.time()
+            cycle_count = 0
+        #mask, cnts =thresholdingForOrange(image)
+        #if len(cnts) > 0:
+        #     print(selectBall(image,cnts))
+        #else:
+        #    print("no contour found")
+        ted = time.time()
+        #print(tst - ted)
+        ted = time.time()
+        tedd = time.time()
+        #print("truncate")
+        #print(tedd - ted)

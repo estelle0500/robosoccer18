@@ -7,13 +7,13 @@ from picamera.array import PiRGBArray
 camera = PiCamera()
 camera.resolution = (640, 480)
 #camera.shutter_speed = 1
-camera.framerate = 90
+camera.framerate = 30
 rawCapture = PiRGBArray(camera, size=(640, 480))
 
 cnt = 0
 t0 = time.time()
 t2 = 0
-for f in camera.capture_continuous(rawCapture,format="bgr", use_video_port=True):
+for f in camera.capture_continuous(rawCapture,format="rgb",use_video_port=True):
     t1 = time.time()
     print(t1-t2)	
     image = f.array
