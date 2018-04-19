@@ -8,8 +8,9 @@ Compass::Compass(HardwareSerial& serial, int baud_rate) {
 
 void Compass::init(){
     (this->serial)->begin(this->baud_rate);
-    delay(300);
-    this->readAngle();
+    delay(500);
+    while ((this->serial)->available()) (this->serial)->read();
+    while (!this->readAngle());
     this->north = this->angle;
 }
 
